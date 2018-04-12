@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
 
     This plugin creates a persistent tcp connection to a remote host at start. 
   }
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/dotwilbert/fluent-plugin-tcp-ml"
   spec.license       = "Apache-2.0"
 
   test_files, files  = `git ls-files -z`.split("\x0").partition do |f|

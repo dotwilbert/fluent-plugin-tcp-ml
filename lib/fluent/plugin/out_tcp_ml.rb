@@ -26,7 +26,7 @@ module Fluent
       # helpers :thread
 
       desc 'Host name to include in message'
-      config_param :hostname, :string, default: ''
+      config_param :hostname, :string, default: '-'
       desc 'Remote TCP host'
       config_param :host, :string, default: nil
       desc 'Remote TCP port'

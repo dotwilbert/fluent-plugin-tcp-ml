@@ -16,6 +16,7 @@
 require 'fluent/plugin/output'
 require 'socket'
 require 'tcpml/client'
+require 'uuidtools'
 
 module Fluent
   module Plugin
@@ -76,6 +77,19 @@ module Fluent
         true
       end
 
+      def format(tag, time, record)
+        ts = DateTime.now.strftime('%FT%T,%L%:z')
+        eventid = UUIDTools::UUID.timestamp_create.hexdigest
+        msg = record['message']
+        lines = msg.split(/\r?\n/)
+        nol = lines.length
+        out_msg = ""
+        lines.each_with_index do |line, idx|
+          out_msg += format_line(eventid, ts, idx, nol, line)
+        end
+        out_msg
+      end
+
       def write(chunk)
         return if chunk.empty?
 
@@ -84,19 +98,10 @@ module Fluent
         client = Thread.current[host_port]
 
         begin
-          ts = DateTime.now.strftime('%FT%T,%L%:z')
-          eventid = dump_unique_id_hex(chunk.unique_id)
-          lines = []
           chunk.open do |io|
             io.each_line do |msg|
-              # puts "Got one >#{msg}<"
-              lines << msg.chomp!
+              client.transmit(msg)
             end
-          end
-          # lines = chunk.read.split(/\r?\n/)
-          nol = lines.length
-          lines.each_with_index do |msg, idx|
-            client.transmit(format_line(eventid, ts, idx, nol, msg))
           end
         rescue
           if Thread.current[host_port]
@@ -118,7 +123,7 @@ module Fluent
       end
 
       def format_line(eventid, timestamp, idx, count, msg)
-        "#{timestamp} #{eventid} #{idx} #{count} #{msg}"
+        "#{timestamp} #{eventid} #{idx} #{count} #{msg}\n"
       end
     end
   end

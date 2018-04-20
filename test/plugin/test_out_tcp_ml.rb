@@ -20,6 +20,10 @@ class TcpMlOutputTest < Test::Unit::TestCase
     hostname 'container67.adaptiveplanning.com'
     host '127.0.0.1'
     port 2000
+    keep_alive_true
+    keep_alive_idle 60
+    keep_alive_intvl 5
+    keep_alive_cnt 3
   ]
 
   sub_test_case 'configured with invalid configurations' do
@@ -50,7 +54,7 @@ class TcpMlOutputTest < Test::Unit::TestCase
       end
       results = svr.value
       results.each do |r|
-        assert { r.match?(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2},\d{3}[+-]\d{2}:\d{2} [a-f0-9]{32} \d+ \d+ .*$/) }
+        assert { r.match?(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2},\d{3}[+-]\d{2}:\d{2} [a-z0-9A-Z.]+ [A-Za-z-]+ [a-f0-9]{32} \d+ \d+ .*$/) }
       end
       # assert{ check_write_of_plugin_called_and_its_result() }
     end

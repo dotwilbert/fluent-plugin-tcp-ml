@@ -56,12 +56,7 @@ $ gem build fluent-plugin-tcp-ml-<version>.gem
 * **flush_thread_burst_interval** () (optional): 
   * Default value: `0.5`.
 
-
-```
-$ fluent-plugin-config-format output tcp_ml
-```
-
-You can copy and paste generated documents here.
+[ Generated with: `$ fluent-plugin-config-format -c -f markdown output tcp_ml` ]
 
 ## Copyright
 

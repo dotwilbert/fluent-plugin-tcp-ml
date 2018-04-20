@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name    = "fluent-plugin-tcp-ml"
-  spec.version = "1.0.3"
+  spec.version = "1.0.5"
   spec.authors = ["dotwilbert"]
   spec.email   = ["fietsebel@thisisnotmyrealemail.com"]
 

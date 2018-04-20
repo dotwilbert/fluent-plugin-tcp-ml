@@ -35,11 +35,13 @@ module Fluent
       desc 'Remote TCP port'
       config_param :port, :integer
 
-      # config_param :timeout,           :time,    default: nil
-      # config_param :timeout_exception, :bool,    default: false
+      desc 'Enable keep alive on the socket'
       config_param :keep_alive,        :bool,    default: false
+      desc 'TCP_KEEPIDLE: The time (in seconds) the connection needs to remain idle before TCP starts sending keepalive probes'
       config_param :keep_alive_idle,   :integer, default: nil
+      desc 'TCP_KEEPCNT: The maximum number of keepalive probes TCP should send before dropping the connection'
       config_param :keep_alive_cnt,    :integer, default: nil
+      desc 'TCP_KEEPINTVL: The time (in seconds) between individual keepalive probes'
       config_param :keep_alive_intvl,  :integer, default: nil
 
       config_section :buffer do
@@ -52,9 +54,6 @@ module Fluent
       def configure(conf)
         super
         @clients = []
-        if @host.nil? || @port.nil?
-          raise ConfigError, 'both host and port are required'
-        end
         # Test socket capabilities
         socket_capability_keep_alive = Socket.const_defined?(:SOL_SOCKET) &&
                                        Socket.const_defined?(:SO_KEEPALIVE) &&

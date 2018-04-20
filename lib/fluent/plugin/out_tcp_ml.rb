@@ -31,9 +31,9 @@ module Fluent
       desc 'Application name to include in message'
       config_param :appname, :string, default: '-'
       desc 'Remote TCP host'
-      config_param :host, :string, default: nil
+      config_param :host, :string
       desc 'Remote TCP port'
-      config_param :port, :integer, default: nil
+      config_param :port, :integer
 
       # config_param :timeout,           :time,    default: nil
       # config_param :timeout_exception, :bool,    default: false

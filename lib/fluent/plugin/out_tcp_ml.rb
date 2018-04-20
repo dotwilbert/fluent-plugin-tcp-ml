@@ -28,6 +28,8 @@ module Fluent
 
       desc 'Host name to include in message'
       config_param :hostname, :string, default: '-'
+      desc 'Application name to include in message'
+      config_param :appname, :string, default: '-'
       desc 'Remote TCP host'
       config_param :host, :string, default: nil
       desc 'Remote TCP port'
@@ -77,15 +79,15 @@ module Fluent
         true
       end
 
-      def format(tag, time, record)
+      def format(_tag, _time, record)
         ts = DateTime.now.strftime('%FT%T,%L%:z')
         eventid = UUIDTools::UUID.timestamp_create.hexdigest
         msg = record['message']
         lines = msg.split(/\r?\n/)
         nol = lines.length
-        out_msg = ""
+        out_msg = ''
         lines.each_with_index do |line, idx|
-          out_msg += format_line(eventid, ts, idx, nol, line)
+          out_msg += format_line(ts, @hostname, @appname, eventid, idx, nol, line)
         end
         out_msg
       end
@@ -122,8 +124,8 @@ module Fluent
         c
       end
 
-      def format_line(eventid, timestamp, idx, count, msg)
-        "#{timestamp} #{eventid} #{idx} #{count} #{msg}\n"
+      def format_line(timestamp, hostname, appname, eventid, idx, count, msg)
+        "#{timestamp} #{hostname} #{appname} #{eventid} #{idx} #{count} #{msg}\n"
       end
     end
   end

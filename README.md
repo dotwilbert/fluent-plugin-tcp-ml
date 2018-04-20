@@ -19,27 +19,43 @@ Incoming log events will be outputted as split in embedded lines and outputted a
 
 ### RubyGems
 
+There is currently no other way to install than to clone the repo and issue
 ```
-$ gem install fluent-plugin-tcp-ml
-```
-
-### Bundler
-
-Add following line to your Gemfile:
-
-```ruby
-gem "fluent-plugin-tcp-ml"
-```
-
-And then execute:
-
-```
-$ bundle
+$ gem build fluent-plugin-tcp-ml.gemspec
+.......
+.......
+$ gem build fluent-plugin-tcp-ml-<version>.gem
 ```
 
 ## Configuration
 
-You can generate configuration template:
+* See also: [Output Plugin Overview](https://docs.fluentd.org/v1.0/articles/output-plugin-overview)
+
+## Fluent::Plugin::TcpMlOutput
+
+* **hostname** (string) (optional): Host name to include in message
+  * Default value: `-`.
+* **appname** (string) (optional): Application name to include in message
+  * Default value: `-`.
+* **host** (string) (required): Remote TCP host
+* **port** (integer) (required): Remote TCP port
+* **keep_alive** (bool) (optional): Enable keep alive on the socket
+    * Default value: false
+* **keep_alive_idle** (integer) (optional): TCP_KEEPIDLE: The time (in seconds) the connection needs to remain idle before TCP starts sending keepalive probes
+* **keep_alive_cnt** (integer) (optional): TCP_KEEPCNT: The maximum number of keepalive probes TCP should send before dropping the connection
+* **keep_alive_intvl** (integer) (optional): TCP_KEEPINTVL: The time (in seconds) between individual keepalive probes
+
+### \<buffer\> section (optional) (multiple)
+
+* **flush_mode** () (optional): 
+  * Default value: `interval`.
+* **flush_interval** () (optional): 
+  * Default value: `5`.
+* **flush_thread_interval** () (optional): 
+  * Default value: `0.5`.
+* **flush_thread_burst_interval** () (optional): 
+  * Default value: `0.5`.
+
 
 ```
 $ fluent-plugin-config-format output tcp_ml
@@ -49,6 +65,6 @@ You can copy and paste generated documents here.
 
 ## Copyright
 
-* Copyright(c) 2018- TODO: Write your name
+* Copyright(c) 2018- dotwilbert
 * License
   * Apache License, Version 2.0
